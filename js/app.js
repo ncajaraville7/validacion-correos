@@ -1,3 +1,4 @@
+const formulario = document.querySelector('#formulario');
 const btnEnviar = document.querySelector('#enviar');
 const inputEmail = document.querySelector('#email');
 const inputAsunto = document.querySelector('#asunto');
@@ -13,6 +14,9 @@ function eventListeners() {
     inputEmail.addEventListener('blur', validarCampos);
     inputAsunto.addEventListener('blur', validarCampos);
     inputMensaje.addEventListener('blur', validarCampos);
+
+    formulario.addEventListener('submit', enviarFormulario);
+
 }
 
 function iniciarApp() {
@@ -28,19 +32,23 @@ function validarCampos(e) {
     }else {
         e.target.classList.remove('border-red-600');
         e.target.classList.add('border-green-600');
-        error.remove();
+        error.innerHTML = '';
     }
 
     if(e.target.type === 'email') {
         if(validacionEmail.test(e.target.value)) {
-            console.log('ok')
-            error.remove();
+            error.innerHTML = '';
             
         } else {
             e.target.classList.remove('border-green-600');
             e.target.classList.add('border-red-600');
             mostrarError('E-mail no valido');
         }
+    }
+
+    if(validacionEmail.test(inputEmail.value) && inputAsunto.value !== '' && inputMensaje.value !== '') {
+        btnEnviar.disabled = false;
+        btnEnviar.classList.remove('cursor-not-allowed', 'opacity-50');
     }
 }
 
@@ -52,3 +60,27 @@ function mostrarError(msj) {
     error.appendChild(mensajeError);
 }
 
+
+function enviarFormulario(e) {
+    e.preventDefault();
+    const loader = document.querySelector('#spinner');
+    loader.style.display = 'flex';
+
+    const alerta = document.createElement('p');
+
+    setTimeout(()=> {
+        loader.style.display = 'none'
+        alerta.textContent = 'Formulario enviado correctamente';
+        alerta.classList.add('text-center', 'my-10', 'p-2', 'bg-green-500', 'text-white')
+        error.appendChild(alerta);
+        formulario.reset();
+        inputEmail.style.border = 'black';
+        inputAsunto.style.border = 'black';
+        inputMensaje.style.border = 'black';
+        iniciarApp();
+    }, 2000) 
+
+    setTimeout(()=> {
+        alerta.remove();
+    }, 4000) 
+}
