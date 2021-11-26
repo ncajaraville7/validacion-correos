@@ -70,7 +70,7 @@ function enviarFormulario(e) {
 
     setTimeout(()=> {
         loader.style.display = 'none'
-        alerta.textContent = 'Formulario enviado correctamente';
+        alerta.textContent = 'Correo enviado correctamente';
         alerta.classList.add('text-center', 'my-10', 'p-2', 'bg-green-500', 'text-white')
         error.appendChild(alerta);
         formulario.reset();
